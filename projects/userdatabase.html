@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="title" content="Simulating a User Database | Isabelle Hu | Professional Portfolio">
+    <meta name="description" content="">
+    <meta name="image" content="https://github.com/IGraceH.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Isabelle Hu | Professional Portfolio">
+    <meta property="og:url" content="https://IGraceH.github.io/projects/userdatabase.html">
+    <meta property="og:title" content="Simulating a User Database | Isabelle Hu | Professional Portfolio">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="https://github.com/IGraceH.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/techfolio-theme/default.css">
+    <link rel="stylesheet" type="text/css" href="/css/rouge/github.css">
+    <!-- Load MathJax if 'mathjax: true' is found in your _config.yml. -->
+    
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML">
+    </script>
+    
+
+    <title>Simulating a User Database | Isabelle Hu | Professional Portfolio</title>
+  </head>
+  <body>
+  <header class="navbar navbar-expand navbar-light bg-light bg-gradient border-bottom">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Isabelle Hu</a>
+    <div class="ms-auto">
+      <ul class="navbar-nav mb-2 mb-lg-0">
+        <a class="nav-link" href="/#projects">Projects</a>
+        <a class="nav-link" href="/#essays">Essays</a>
+        <a class="nav-link" href="/resume.html">Resume</a>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<div class="container py-4">
+  <h1 class="display-4">Simulating a User Database</h1>
+ <p><img width="300px" src="../img/userdatabase/userdatabase-square.png" class="float-start pe-4" /></p>
+
+<p>When I took ICS 212, we were to create a simulation of a user database using C++, the programming language we were learning at the time. The program could store, edit, find, and list the user information within the database. The information persists after the program is closed using file input/output. The program also included a debug mode that could be accessed from running the function in the command line.</p>
+
+<p>I learned and practiced the basics of C++ during this project, especially the specifics of how the input and output functions work and how they interact with the buffer.</p>
+
+<p>This is the getaddress function that I wrote. Since addresses can be multi-line, I constructed a function that processes an input after a special character (in this case, ~) is typed in.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">getaddress</span> <span class="p">(</span><span class="kt">char</span> <span class="n">address</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">size</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="n">currentChar</span><span class="p">;</span>
+    <span class="kt">char</span><span class="o">*</span> <span class="n">currentArray</span> <span class="o">=</span> <span class="n">address</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">empty</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+    
+    <span class="cp">#ifdef DEBUGMODE
+</span>        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\x1b</span><span class="s">[93m"</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">----------------------------------------------</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"DEBUG INFO"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Function: getaddress"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Parameters:"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"    char address[]:"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"      "</span><span class="p">;</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">address</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="sc">'\0'</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">address</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">address</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">'\n'</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"      "</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">i</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"    int size: "</span> <span class="o">&lt;&lt;</span> <span class="n">size</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"----------------------------------------------</span><span class="se">\n</span><span class="s">"</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\x1b</span><span class="s">[0m"</span><span class="p">;</span>
+    <span class="cp">#endif
+</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Please enter your address."</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"When you are finished typing, press ~ and hit enter."</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="k">do</span>
+    <span class="cm">/* Gets a character from the buffer into currentChar. Also 
+    // stops if the current character is not ~ */</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cin</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">currentChar</span><span class="p">);</span>
+        <span class="cm">/* The character gets put into the current array position */</span>
+        <span class="o">*</span><span class="n">currentArray</span> <span class="o">=</span> <span class="n">currentChar</span><span class="p">;</span>
+        <span class="cm">/* the current array position gets incremented */</span>
+        <span class="n">currentArray</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">while</span> <span class="p">(</span><span class="o">--</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">currentChar</span> <span class="o">!=</span> <span class="sc">'~'</span><span class="p">);</span>
+    
+    <span class="n">std</span><span class="o">::</span><span class="n">cin</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cin</span><span class="p">.</span><span class="n">getline</span><span class="p">(</span><span class="n">empty</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+    
+    <span class="n">currentArray</span><span class="o">--</span><span class="p">;</span>
+    
+    <span class="c1">// Clears out the rest of the array in case previous address was long as heckums</span>
+    <span class="k">while</span> <span class="p">(</span><span class="o">--</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="o">*</span><span class="n">currentArray</span> <span class="o">=</span> <span class="sc">'\0'</span><span class="p">;</span>
+        <span class="n">currentArray</span><span class="o">++</span><span class="p">;</span> 
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You can learn more at the <a href="https://manoa.hawaii.edu/news/article.php?aId=2857">UH Micromouse News Announcement</a>.</p>
+
+</div>
+
+<footer class="navbar navbar-expand navbar-light bg-light bg-gradient border-top">
+  <div class="container-fluid">
+    <div class="ms-auto">
+      <ul class="navbar-nav mb-2 mb-lg-0">
+        <small><a class="nav-link" href="https://techfolios.github.io">Made with Techfolios</a></small>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+  </body>
+</html>
